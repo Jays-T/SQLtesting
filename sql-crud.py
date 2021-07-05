@@ -101,15 +101,33 @@ john_traas = Programmer(
 # programmer.famous_for = "Linux"
 
 # update multiple records
-people = session.query(Programmer)
-for person in people:
-    if person.gender == "F":
-        person.gender = "Female"
-    elif person.gender == "M":
-        person.gender = "Male"
+# people = session.query(Programmer)
+# for person in people:
+#     if person.gender == "F":
+#         person.gender = "Female"
+#     elif person.gender == "M":
+#         person.gender = "Male"
+#     else:
+#         print("Gender not defined")
+#     session.commit()
+
+
+# deleting a single record
+fname = input("Enter a first name: ")
+lname = input("Enter a last name: ")
+programmer = session.query(Programmer).filter_by(first_name=fname, last_name=lname).first()
+# defensive programming
+if programmer is not None:
+    print("Programmer Found: ", programmer.first_name + " " + programmer.last_name)
+    confirmation = input("Are you sure you want to delete this recored? (y/n) ")
+    if confirmation.lower() == "y":
+        session.delete(programmer)
+        session.commit()
+        print("Programmer has been deleted, their records have been forgotten, why have you done this?")
     else:
-        print("Gender not defined")
-    session.commit()
+        print("Programmer not deleted")
+else:
+    print("No records found")
 
 
 # commit our session to the database
